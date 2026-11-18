@@ -4,6 +4,12 @@ import * as ui from '../ui.js';
 
 const POR_PAGINA = 50;
 
+const dataBR = (v) => {
+  if (!v) return '—';
+  const [a, m, d] = String(v).split('-');
+  return `${d}/${m}/${a}`;
+};
+
 export async function render(raiz, ctx) {
   ctx.setTitulo('NCM');
 
@@ -58,11 +64,17 @@ export async function render(raiz, ctx) {
 
     lista.innerHTML = data.length ? `
       <div class="tabela-rolagem"><table>
-        <thead><tr><th>NCM</th><th>Descrição</th></tr></thead>
+        <thead><tr><th>NCM</th><th>Descrição</th><th>Data início</th><th>Data fim</th>
+          <th>Ato legal</th><th>Nº</th><th>Ano</th></tr></thead>
         <tbody>
           ${data.map((n) => `<tr>
             <td class="mono">${ui.esc(n.codigo)}</td>
             <td>${ui.esc(n.descricao)}</td>
+            <td>${dataBR(n.data_inicio)}</td>
+            <td>${dataBR(n.data_fim)}</td>
+            <td>${ui.esc(n.ato_legal_inicio || '—')}</td>
+            <td class="mono">${ui.esc(n.numero || '—')}</td>
+            <td>${ui.esc(n.ano || '—')}</td>
           </tr>`).join('')}
         </tbody>
       </table></div>` : ui.vazio('Nenhum código encontrado.');
